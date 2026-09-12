@@ -23,19 +23,19 @@ models/
 *.log
 
 # --- LaTeX build files ---
-paper/*.aux
-paper/*.out
-paper/*.toc
-paper/*.fls
-paper/*.fdb_latexmk
-paper/*.synctex.gz
-paper/*.bbl
-paper/*.blg
-paper/*.nav
-paper/*.snm
-paper/*.vrb
+report/*.aux
+report/*.out
+report/*.toc
+report/*.fls
+report/*.fdb_latexmk
+report/*.synctex.gz
+report/*.bbl
+report/*.blg
+report/*.nav
+report/*.snm
+report/*.vrb
 # The built PDF is uploaded to the sprint platform; `git add -f` if you want it here.
-paper/*.pdf
+report/*.pdf
 
 # --- OS / editors ---
 .DS_Store

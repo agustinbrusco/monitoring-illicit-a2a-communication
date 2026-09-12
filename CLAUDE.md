@@ -53,7 +53,7 @@ Decidir el sábado a la mañana antes de escribir código. Lo que un mes más ag
 ## Convenciones (propuesta, ajustar entre todos)
 - Código e identificadores en inglés; documentación, notas e informe en español salvo que el equipo decida entregar en inglés (el sprint es en inglés, el informe seguramente sí).
 - Python 3.12. Entorno con `uv`: `uv sync --extra cpu|cuda|rocm` según la máquina (torch viene del índice que corresponda). Datasets en JSONL, un registro por observación con campos `text`, `source_channel`, `label`, `split`, `origin`. Activaciones en `.npy` o `.safetensors`, fuera de git.
-- Estructura sugerida: `context/` (fuentes: markdown de BAISWARM, texto de METR), `data/` (JSONL; lo generado fuera de git si pesa), `src/` (extracción de activaciones, probes, cascada), `eval/` (scripts y figuras), `results/` (pesos de probes, métricas, figuras finales; chico, en git), `paper/` (informe LaTeX sobre el template de Apart, `make -C paper`), `activations/` (fuera de git).
+- Estructura sugerida: `context/` (fuentes: markdown de BAISWARM, texto de METR), `data/` (JSONL; lo generado fuera de git si pesa), `src/` (extracción de activaciones, probes, cascada), `eval/` (scripts y figuras), `results/` (pesos de probes, métricas, figuras finales; chico, en git), `report/` (informe LaTeX sobre el template de Apart, `make -C report`), `activations/` (fuera de git).
 - Toda cita al registro del incidente lleva fuente y, si es METR, número de línea de `context/metr-report-2026-08.txt`.
 - Nada de claves de API en el repo.
 

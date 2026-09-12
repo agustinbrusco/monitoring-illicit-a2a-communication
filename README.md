@@ -20,7 +20,7 @@ data/         datasets en JSONL, un registro por observación (esquema en data/R
 src/          paquete `a2a_probe`: extracción de activaciones, probes, cascada
 eval/         scripts de evaluación y figuras
 results/      pesos de probes, métricas y figuras finales (chico, va en git)
-paper/        informe en LaTeX sobre el template de Apart
+report/        informe en LaTeX sobre el template de Apart
 activations/  activaciones en .npy / .safetensors (ignorado por git)
 ```
 
@@ -49,9 +49,9 @@ Nada de claves de API en el repo: van en `.env`, que está ignorado.
 Requiere TeX Live con `pdflatex` (y `latexmk` para el modo watch).
 
 ```bash
-make -C paper          # compila paper/apart-template.pdf
-make -C paper watch    # recompila al guardar
-make -C paper clean
+make -C report          # compila report/apart-template.pdf
+make -C report watch    # recompila al guardar
+make -C report clean
 ```
 
 El template es un port a LaTeX de la plantilla oficial de Apart. Tiene un switch `\guidancetrue` / `\guidancefalse` en el preámbulo que muestra u oculta todo el texto de guía: apagarlo antes de entregar.
