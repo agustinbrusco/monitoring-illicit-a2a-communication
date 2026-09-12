@@ -1,0 +1,257 @@
+%=======================================================================
+%  Apart Research — Hackathon Submission Template (LaTeX port)
+%  AI Incident Response Sprint, September 2026
+%
+%  Toggle \guidancetrue / \guidancefalse below to show or hide every
+%  piece of italic guidance text at once. Set it to false before
+%  submitting — the original template asks you to delete all guidance.
+%=======================================================================
+
+\documentclass[11pt,a4paper]{article}   % use [letterpaper] to match the original PDF
+
+%------------------------- packages ------------------------------------
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[english]{babel}
+\IfFileExists{lmodern.sty}{\usepackage{lmodern}}{}  % optional: nicer fonts if installed
+\usepackage[margin=1in]{geometry}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{amsmath,amssymb}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage{caption}
+\usepackage{titlesec}
+\usepackage[hidelinks,breaklinks]{hyperref}
+
+%------------------------- guidance switch -----------------------------
+\newif\ifguidance
+\guidancetrue          % <-- set to \guidancefalse for the final PDF
+
+\definecolor{guidegray}{gray}{0.40}
+
+% \guide{...} : inline italic guidance, disappears when guidance is off
+\newcommand{\guide}[1]{\ifguidance\textcolor{guidegray}{\itshape #1}\par\medskip\fi}
+
+% framed "how to use this template" box (vanishes entirely when guidance is off)
+\usepackage{comment}
+\ifguidance
+  \newsavebox{\gbox}
+  \newenvironment{guidancebox}
+    {\begin{lrbox}{\gbox}\begin{minipage}{0.88\textwidth}%
+     \small\color{guidegray}\itshape}
+    {\end{minipage}\end{lrbox}%
+     \begin{center}\setlength{\fboxsep}{10pt}%
+     \fcolorbox{guidegray}{gray!6}{\usebox{\gbox}}\end{center}\medskip}
+\else
+  \excludecomment{guidancebox}
+\fi
+
+%------------------------- author block --------------------------------
+% One entry per author. Add or remove \authorentry lines freely.
+\newcommand{\authorentry}[2]{%
+  \begin{minipage}[t]{0.30\linewidth}\centering
+    #1\\[2pt]{\small\itshape #2}
+  \end{minipage}\hspace{0.01\linewidth}}
+
+%------------------------- section styling -----------------------------
+\titleformat{\section}{\normalfont\large\bfseries}{\thesection.}{0.5em}{}
+\titleformat{\subsection}{\normalfont\normalsize\bfseries}{\thesubsection}{0.5em}{}
+\setlength{\parskip}{0.5em}
+\setlength{\parindent}{0pt}
+
+%=======================================================================
+\begin{document}
+
+%------------------------- title page ----------------------------------
+\begin{center}
+  {\LARGE\bfseries PROJECT TITLE\footnote{Research conducted at the AI Incident
+   Response Sprint, September 2026.}}\\[1.5em]
+
+  \authorentry{Author name 1}{Affiliation}
+  \authorentry{Author name 2}{Affiliation}
+  \authorentry{Author name 3}{Affiliation}\\[1.2em]
+  \authorentry{Author name 4}{Affiliation}
+  \authorentry{Author name 5}{Affiliation}
+  \authorentry{Author name 6}{Affiliation}\\[1.5em]
+
+  {\itshape With}\\[2pt]
+  Apart Research
+\end{center}
+
+\vspace{1em}
+
+%------------------------- abstract ------------------------------------
+\begin{center}\textbf{Abstract}\end{center}
+\begin{quote}
+\guide{Summarize your project in 150--250 words. A strong abstract lets a reviewer
+understand what you did and why it matters without reading anything else. Make sure
+to cover: the problem, your approach, key results, and the main takeaway. Polish it
+last: the abstract should reflect your final results, not your initial plan.}
+\ifguidance\else\textit{[Abstract here.]}\fi
+\end{quote}
+
+\vspace{0.5em}
+
+\begin{guidancebox}
+\textbf{How to use this template:} Replace the italicized guidance text under each
+section with your content. The section structure is strong guidance but not rigid.
+If your project requires a different organization, feel free to adapt. Delete all
+guidance text including this info box before submitting (set
+\texttt{\textbackslash guidancefalse} at the top of the preamble). Make sure the
+project title and author information above are up to date.
+
+\medskip
+\textbf{How your submission will be evaluated:} Your project will be judged on the
+quality of this written report. To understand what we look for, see the Evaluation
+Rubric.
+
+\medskip
+\textbf{Length:} the sprint page asks for 4 to 8 pages (8 max) excluding
+references and appendices. The original template's rough guide for 4 pages:
+Intro \& Related Work 1p, Methods and Results 2.5p, Discussion 0.5p.
+\end{guidancebox}
+
+%------------------------- 1. Introduction -----------------------------
+\section{Introduction}
+\guide{What problem are you addressing and why does it matter? Connect it to your
+work: we want to know why your work is practically valuable. Provide enough
+background for readers to understand your work. If relevant, briefly describe the
+threat model or failure mode you're addressing; reference prior work that motivates
+why it is worth addressing, or explain it yourself. Aspire to clearly list your most
+important contributions that go beyond what exists today.}
+
+Our main contributions are:
+\begin{enumerate}[leftmargin=*,itemsep=2pt]
+  \item {[First contribution --- what new thing did you create, discover, or demonstrate?]}
+  \item {[Second contribution]}
+  \item {[Third contribution, if applicable]}
+\end{enumerate}
+
+%------------------------- 2. Related Work -----------------------------
+\section{Related Work}
+\guide{What prior work is most similar, and how does your work differ? Cite the most
+relevant papers, tools, or projects. Explain what gap your work addresses. Some
+questions which may help: (a) When and why would someone use your method over the
+existing state-of-the-art? (b) What information/insight does your method provide
+which we did not have before?}
+
+%------------------------- 3. Methods ----------------------------------
+\section{Methods}
+\guide{Describe your approach clearly enough that someone could replicate it.
+Include key design choices and justify them where relevant (hint: the more you can
+back up your design choices by referencing prior work, the better). What
+models/datasets/tools did you use and why? What were key parameters or design
+decisions? What did you try that didn't work? Could someone reproduce your work from
+this description?}
+
+%------------------------- 4. Results ----------------------------------
+\section{Results}
+\guide{Present your main findings with appropriate evidence. Use figures and tables
+where appropriate (we strongly encourage at least one figure). Distinguish between
+observations and interpretations. Argue why your claims are robust. E.g., if your
+approach ``performs better'' than alternatives: (a) Do you have enough data? Is the
+difference statistically significant? (b) Is it robust? Or do small changes to your
+setup cause substantial changes to your results?}
+
+\begin{guidancebox}
+\textbf{Tips for figures and tables:} Number all figures (Figure 1, Figure 2\dots)
+and tables (Table 1, Table 2\dots). Include descriptive captions that can be
+understood without the main text. Place figures/tables near where they're first
+referenced. Ensure text in figures is legible.
+\end{guidancebox}
+
+% ---- example figure / table scaffolding (delete if unused) ----
+% \begin{figure}[t]
+%   \centering
+%   \includegraphics[width=0.8\linewidth]{figures/example.pdf}
+%   \caption{Self-contained caption describing what the figure shows.}
+%   \label{fig:example}
+% \end{figure}
+%
+% \begin{table}[t]
+%   \centering
+%   \begin{tabular}{lrr}
+%     \toprule
+%     Model & Metric A & Metric B \\
+%     \midrule
+%     \dots & \dots & \dots \\
+%     \bottomrule
+%   \end{tabular}
+%   \caption{Self-contained caption describing what the table shows.}
+%   \label{tab:example}
+% \end{table}
+
+%------------------------- 5. Discussion -------------------------------
+\section{Discussion and Limitations}
+\guide{Discuss the broader implications for AI safety. What do your results mean?
+What trends do you notice and what might they indicate?}
+
+\subsection*{Limitations}
+\guide{What are the limitations of your work? What threat models or failure modes
+did you not address? Be honest about constraints --- methodological limitations,
+scope limitations, or aspects you couldn't fully address in the hackathon timeframe.
+Explicitly note the assumptions you made, whether implicitly or explicitly, and how
+the interpretation of your results would change if a given assumption did not hold.}
+
+\subsection*{Future Work}
+\guide{What are the natural next steps? How could this work be extended?}
+
+%------------------------- 6. Conclusion -------------------------------
+\section{Conclusion}
+\guide{Briefly summarize your main findings and their implications (1--2 paragraphs).}
+
+%------------------------- Code and Data -------------------------------
+\section*{Code and Data}
+\guide{Include links if applicable. If your project doesn't involve code (e.g.,
+policy analysis) or if there are info-hazard considerations, note that here.}
+\begin{itemize}[leftmargin=*,itemsep=2pt]
+  \item Code repository: [Link to GitHub/GitLab if applicable]
+  \item Data/Datasets: [Link if applicable]
+  \item Other artifacts (optional): [Demo link, video walkthrough, Hugging Face Space, etc.]
+\end{itemize}
+
+%------------------------- Author Contributions ------------------------
+\section*{Author Contributions (optional)}
+\guide{e.g., ``A.B. led the project and designed experiments. C.D. implemented the
+code. All authors contributed to writing and reviewed the final manuscript.''}
+
+%------------------------- References ----------------------------------
+\section*{References}
+\guide{Use a consistent citation format. Include: Author(s), Year, Title,
+Venue/Publisher, and URL or DOI where available.}
+
+\begin{enumerate}[leftmargin=*,itemsep=2pt]
+  \item {[Reference 1]}
+  \item {[Reference 2]}
+  \item \dots
+\end{enumerate}
+
+% If you prefer BibTeX, delete the block above and uncomment:
+% \bibliographystyle{plainnat}
+% \bibliography{refs}
+
+%------------------------- Appendix ------------------------------------
+\appendix
+\section*{Appendix (optional)}
+\guide{Supplementary material such as additional figures, detailed methodology,
+prompts used, extended results, etc.}
+
+%------------------------- Dual-use appendix ---------------------------
+% NOTE: the sprint's submission requirements list a mandatory
+% "Limitations and Dual-Use Considerations" appendix, which the official
+% template does not include as its own section. Keeping it explicit here.
+\section*{Limitations and Dual-Use Considerations}
+\guide{Required by the sprint submission checklist. State what your artifact does
+and does not establish, and any way it could be misused. If you withheld results
+(e.g.\ novel installation recipes) pending disclosure review, say so here.}
+
+%------------------------- LLM usage -----------------------------------
+\section*{LLM Usage Statement}
+\guide{If you used LLM assistance in developing your project or writing this report,
+briefly note how. Ensure all claims and results have been verified. NOTE: We
+strongly encourage that the final version of the submission is primarily written by
+your team. E.g., ``We used Claude to brainstorm approaches and help draft sections.
+All results and claims were independently verified.''}
+
+\end{document}

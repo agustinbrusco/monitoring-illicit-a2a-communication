@@ -1,0 +1,69 @@
+[project]
+name = "a2a-probe"
+version = "0.1.0"
+description = "Linear probe + I/O monitor for detecting unexpected agent-to-agent interactions in agentic transcripts"
+readme = "README.md"
+license = "MIT"
+requires-python = ">=3.12,<3.14"
+dependencies = [
+    "numpy>=2.0",
+    "pandas>=2.2",
+    "scikit-learn>=1.6",
+    "safetensors>=0.5",
+    "transformers>=5.0",
+    "accelerate>=1.0",
+    "tqdm>=4.66",
+    "matplotlib>=3.9",
+    "python-dotenv>=1.0",
+]
+
+[project.optional-dependencies]
+# Pick exactly one per machine: `uv sync --extra cpu|cuda|rocm`. See README.
+cpu = ["torch==2.14.0"]
+cuda = ["torch==2.14.0"]  # PyPI wheels, CUDA 13 bundled (needs a recent NVIDIA driver)
+rocm = [
+    "torch==2.14.0 ; sys_platform == 'linux'",
+    "triton-rocm ; sys_platform == 'linux'",  # torch+rocm dep, only on the ROCm index
+]
+
+[dependency-groups]
+dev = [
+    "jupyterlab>=4.2",
+    "ipykernel>=6.29",
+    "pytest>=8",
+    "ruff>=0.6",
+]
+
+[build-system]
+requires = ["uv_build>=0.10.7,<0.11.0"]
+build-backend = "uv_build"
+
+[tool.uv]
+environments = ["sys_platform == 'linux'", "sys_platform == 'darwin'"]
+conflicts = [
+    [{ extra = "cpu" }, { extra = "cuda" }, { extra = "rocm" }],
+]
+
+[tool.uv.sources]
+torch = [
+    { index = "pytorch-cpu", extra = "cpu" },
+    { index = "pytorch-rocm", extra = "rocm" },
+]
+triton-rocm = [{ index = "pytorch-rocm", extra = "rocm" }]
+
+[[tool.uv.index]]
+name = "pytorch-cpu"
+url = "https://download.pytorch.org/whl/cpu"
+explicit = true
+
+[[tool.uv.index]]
+name = "pytorch-rocm"
+url = "https://download.pytorch.org/whl/rocm7.2"
+explicit = true
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

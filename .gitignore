@@ -1,0 +1,43 @@
+# --- Python ---
+.venv/
+__pycache__/
+*.py[cod]
+*.egg-info/
+build/
+dist/
+.ipynb_checkpoints/
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+
+# --- Secrets ---
+.env
+.env.*
+!.env.example
+
+# --- Heavy artifacts (see data/README.md) ---
+# Activations and model weights never go in git. Datasets (JSONL) and
+# probe weights are small and DO go in git (data/, results/).
+activations/
+models/
+*.log
+
+# --- LaTeX build files ---
+paper/*.aux
+paper/*.out
+paper/*.toc
+paper/*.fls
+paper/*.fdb_latexmk
+paper/*.synctex.gz
+paper/*.bbl
+paper/*.blg
+paper/*.nav
+paper/*.snm
+paper/*.vrb
+# The built PDF is uploaded to the sprint platform; `git add -f` if you want it here.
+paper/*.pdf
+
+# --- OS / editors ---
+.DS_Store
+.vscode/
+.idea/
