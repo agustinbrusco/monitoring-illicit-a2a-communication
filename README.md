@@ -1,65 +1,65 @@
 # Probing for Unexpected Agent2Agent Interactions
 
-Probe lineal sobre activaciones más monitor de I/O para detectar interacciones inesperadas entre agentes en transcripts agénticos.
+A linear probe on model activations plus an I/O monitor to detect unexpected agent-to-agent interactions in agentic transcripts.
 
-Proyecto del equipo de BAISH (Buenos Aires AI Safety Hub) para el [AI Incident Response Sprint](https://apartresearch.com/sprints/ai-incident-response-sprint-2026-09-11-to-2026-09-13) de Apart Research y CeSIA (11 al 13 de septiembre de 2026), track abierto, sobre el incidente OpenAI / Hugging Face de julio de 2026. Nació como el proyecto #6 del foro BAISWARM; el post original está en [`context/`](context/).
+Project by the BAISH (Buenos Aires AI Safety Hub) team for the [AI Incident Response Sprint](https://apartresearch.com/sprints/ai-incident-response-sprint-2026-09-11-to-2026-09-13) by Apart Research and CeSIA (September 11 to 13, 2026), open track, on the OpenAI / Hugging Face incident of July 2026. It started as project #6 on the BAISWARM forum; the original post (in Spanish) is in [`context/`](context/).
 
-## La idea
+## The idea
 
-1. **Probe de interlocutor.** Probe lineal sobre el residual stream de un modelo open-weight que dispara cuando el modelo cree que lo que acaba de leer lo escribió otro agente, o está dirigido a él como agente. Mismo método que los probes de evaluation awareness.
-2. **Canal.** Cada observación del transcript tiene un origen conocido: sub-agente, herramienta, usuario, archivo, HTTP. Probe alto en un canal donde se esperan agentes no es nada. Probe alto en un canal inesperado es la señal.
-3. **Monitor de I/O.** Un LLM que mira solo las ventanas marcadas y decide si el modelo está tratando ese contenido como instrucción o coordinándose con otro agente.
+1. **Interlocutor probe.** A linear probe on the residual stream of an open-weight model that fires when the model believes what it just read was written by another agent, or is addressed to it as an agent. Same method as evaluation-awareness probes.
+2. **Channel.** Every observation in a transcript has a known origin: sub-agent, tool, user, file, HTTP. A high probe score on a channel where agents are expected means nothing. A high probe score on an unexpected channel is the signal.
+3. **I/O monitor.** An LLM that looks only at the flagged windows and decides whether the model is treating that content as an instruction or coordinating with another agent.
 
-El argumento es "barato y ortogonal al contenido de la tarea", nunca "irrompible". El contexto completo (registro del incidente, plan de evaluación, cómputo, límites a declarar, bibliografía) está en [`CLAUDE.md`](CLAUDE.md).
+The pitch is "cheap and orthogonal to task content", never "unbreakable". Full context (incident record, evaluation plan, compute, limits to declare, bibliography) is in [`CLAUDE.md`](CLAUDE.md).
 
-## Estructura
+## Layout
 
 ```
-context/      fuentes: post de BAISWARM, texto del informe de METR (citable por línea)
-data/         datasets en JSONL, un registro por observación (esquema en data/README.md)
-src/          paquete `a2a_probe`: extracción de activaciones, probes, cascada
-eval/         scripts de evaluación y figuras
-results/      pesos de probes, métricas y figuras finales (chico, va en git)
-report/        informe en LaTeX sobre el template de Apart
-activations/  activaciones en .npy / .safetensors (ignorado por git)
+context/      sources: BAISWARM post, text of the METR report (citable by line number)
+data/         JSONL datasets, one record per observation (schema in data/README.md)
+src/          `a2a_probe` package: activation extraction, probes, cascade
+eval/         evaluation scripts and figures
+results/      probe weights, metrics, final figures (small, tracked in git)
+report/       LaTeX report on the Apart template
+activations/  activations as .npy / .safetensors (git-ignored)
 ```
 
 ## Setup
 
 ### Python
 
-Requiere [uv](https://docs.astral.sh/uv/). Elegí el extra según la máquina:
+Requires [uv](https://docs.astral.sh/uv/). Pick the extra that matches your machine:
 
 ```bash
-uv sync --extra cpu     # laptop sin GPU
-uv sync --extra cuda    # NVIDIA (la H100 alquilada); torch de PyPI
-uv sync --extra rocm    # AMD Strix Halo; torch del índice ROCm de PyTorch
+uv sync --extra cpu     # laptop without a GPU
+uv sync --extra cuda    # NVIDIA (the rented H100); torch from PyPI
+uv sync --extra rocm    # AMD Strix Halo; torch from PyTorch's ROCm index
 ```
 
-Para verificar la GPU (en ROCm también responde por `cuda`):
+To check the GPU (on ROCm it also reports through `cuda`):
 
 ```bash
 uv run python -c "import torch; print(torch.__version__, torch.cuda.is_available())"
 ```
 
-Nada de claves de API en el repo: van en `.env`, que está ignorado.
+No API keys in the repo: they go in `.env`, which is git-ignored.
 
 ### LaTeX
 
-Requiere TeX Live con `pdflatex` (y `latexmk` para el modo watch).
+Requires TeX Live with `pdflatex` (and `latexmk` for watch mode).
 
 ```bash
-make -C report          # compila report/apart-template.pdf
-make -C report watch    # recompila al guardar
+make -C report          # builds report/apart-template.pdf
+make -C report watch    # rebuilds on save
 make -C report clean
 ```
 
-El template es un port a LaTeX de la plantilla oficial de Apart. Tiene un switch `\guidancetrue` / `\guidancefalse` en el preámbulo que muestra u oculta todo el texto de guía: apagarlo antes de entregar.
+The template is a LaTeX port of Apart's official template. It has a `\guidancetrue` / `\guidancefalse` switch in the preamble that shows or hides all guidance text: turn it off before submitting.
 
-Formato de entrega: PDF de hasta 8 páginas sin contar referencias y apéndices, con el artefacto en este repo o en un apéndice. El apéndice de limitaciones y dual use es obligatorio. Video de 3 a 5 minutos opcional. Entrega el domingo 2026-09-13 a las 23:59 AoE.
+Submission format: PDF of up to 8 pages excluding references and appendices, with the artifact in this repo or in an appendix. A Limitations and Dual-Use Considerations appendix is mandatory. A 3 to 5 minute video is optional. Deadline: Sunday 2026-09-13 at 23:59 AoE.
 
-## Convenciones
+## Conventions
 
-- Código e identificadores en inglés. Documentación e informe en español salvo que el equipo decida entregar en inglés (el informe seguramente sí).
-- Toda cita al registro del incidente lleva fuente y, si es METR, número de línea de `context/metr-report-2026-08.txt`.
-- Activaciones y pesos de modelos fuera de git. Pesos de probes, que son chicos, en `results/`.
+- Everything in English: code, identifiers, documentation, report.
+- Every citation of the incident record carries its source and, for METR, the line number in `context/metr-report-2026-08.txt`.
+- Activations and model weights stay out of git. Probe weights, which are small, go in `results/`.
